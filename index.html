@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d14">
+<title>WRENCHLOG</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #090d14;
+  color: #e8edf5;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  padding: 22px;
+  border-bottom: 1px solid #202b3b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: 3px;
+}
+
+.logo span {
+  color: #168bff;
+}
+
+.status {
+  color: #168bff;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 25px 18px;
+}
+
+h1 {
+  font-size: 25px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  color: #77869a;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.dashboard {
+  margin-top: 30px;
+  padding: 22px 12px;
+  background: #101722;
+  border: 1px solid #24354b;
+  border-radius: 12px;
+}
+
+.dashboard-title {
+  text-align: center;
+  font-size: 11px;
+  color: #168bff;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+
+.gauges {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.gauge {
+  width: min(42vw, 190px);
+  aspect-ratio: 1;
+  border: 5px solid #26384e;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle, #151f2d 45%, #090e17 100%);
+  box-shadow: 0 0 18px #087cff22;
+}
+
+.gauge::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 2px dashed #168bff;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.gauge-label {
+  position: absolute;
+  top: 28%;
+  width: 100%;
+  text-align: center;
+  color: #168bff;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.gauge-number {
+  position: absolute;
+  top: 43%;
+  width: 100%;
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.needle {
+  position: absolute;
+  width: 3px;
+  height: 34%;
+  background: #ed303e;
+  left: calc(50% - 1.5px);
+  top: 17%;
+  transform-origin: 50% 100%;
+  transform: rotate(-120deg);
+  transition: transform 1.2s ease-in-out;
+  border-radius: 4px;
+}
+
+.needle.start {
+  transform: rotate(120deg);
+}
+
+.center {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: #ed303e;
+  border-radius: 50%;
+  top: calc(50% - 6px);
+  left: calc(50% - 6px);
+}
+
+.section {
+  margin-top: 25px;
+  padding: 20px;
+  background: #101722;
+  border: 1px solid #24354b;
+  border-radius: 10px;
+}
+
+.section h2 {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #168bff;
+}
+
+.section p {
+  color: #77869a;
+  font-size: 13px;
+}
+
+.start-button {
+  display: block;
+  width: 100%;
+  margin-top: 25px;
+  padding: 16px;
+  background: #087cff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+footer {
+  text-align: center;
+  color: #526176;
+  font-size: 10px;
+  padding: 35px 10px;
+  letter-spacing: 2px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">WRENCH<span>LOG</span></div>
+  <div class="status">● SYSTEM ONLINE</div>
+</header>
+
+<main>
+
+  <h1>GARAGE CONTROL</h1>
+  <div class="subtitle">VEHICLE PROJECT MANAGEMENT SYSTEM</div>
+
+  <div class="dashboard">
+    <div class="dashboard-title">SYSTEM DIAGNOSTICS</div>
+
+    <div class="gauges">
+
+      <div class="gauge">
+        <div class="gauge-label">ENGINE</div>
+        <div class="gauge-number">READY</div>
+        <div class="needle start" id="needle1"></div>
+        <div class="center"></div>
+      </div>
+
+      <div class="gauge">
+        <div class="gauge-label">SYSTEM</div>
+        <div class="gauge-number">100%</div>
+        <div class="needle start" id="needle2"></div>
+        <div class="center"></div>
+      </div>
+
+    </div>
+
+    <button class="start-button" onclick="startSystem()">
+      START SYSTEM
+    </button>
+  </div>
+
+  <div class="section">
+    <h2>ACTIVE PROJECT</h2>
+    <p>No vehicle registered.</p>
+    <p>Your next project starts here.</p>
+  </div>
+
+  <div class="section">
+    <h2>WORKSHOP STATUS</h2>
+    <p>Projects: 0</p>
+    <p>Tasks completed: 0</p>
+    <p>Parts registered: 0</p>
+  </div>
+
+</main>
+
+<footer>
+  WRENCHLOG © 2026 | BUILT FOR THE GARAGE
+</footer>
+
+<script>
+function startSystem() {
+  const button = document.querySelector(".start-button");
+  const needle1 = document.getElementById("needle1");
+  const needle2 = document.getElementById("needle2");
+
+  button.textContent = "SYSTEM CHECKING...";
+
+  needle1.classList.remove("start");
+  needle2.classList.remove("start");
+
+  setTimeout(() => {
+    needle1.style.transform = "rotate(0deg)";
+    needle2.style.transform = "rotate(0deg)";
+    button.textContent = "SYSTEM READY";
+  }, 1300);
+}
+</script>
+
+</body>
+</html>
