@@ -102,28 +102,32 @@ h1 {
 
 
 .gauge::before {
+ 
+.gauge::before {
   content: "";
   position: absolute;
-  inset: 10px;
+  inset: 12px;
   border-radius: 50%;
   background: repeating-conic-gradient(
-    #168bff 0deg 1deg,
-    transparent 1deg 10deg
+    from 225deg,
+    #168bff 0deg 2deg,
+    transparent 2deg 8deg
   );
+  opacity: 1;
   -webkit-mask: radial-gradient(
     circle,
-    transparent 0 78%,
-    black 79% 83%,
-    transparent 84%
+    transparent 0 84%,
+    black 85% 91%,
+    transparent 92%
   );
   mask: radial-gradient(
     circle,
-    transparent 0 78%,
-    black 79% 83%,
-    transparent 84%
+    transparent 0 84%,
+    black 85% 91%,
+    transparent 92%
   );
-  opacity: 0.9;
 }
+
 
 
 
