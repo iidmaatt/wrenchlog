@@ -124,7 +124,27 @@ mask: conic-gradient(from 225deg, #000 0deg 270deg, transparent 270deg 360deg);
   z-index: 0;
   pointer-events: none;
 }
-
+.gauge-ticks {
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    #168bff 0deg 2deg,
+    transparent 2deg 50deg
+  );
+  -webkit-mask: conic-gradient(
+    from 225deg,
+    #000 0deg 270deg,
+    transparent 270deg 360deg
+  );
+  mask: conic-gradient(
+    from 225deg,
+    #000 0deg 270deg,
+    transparent 270deg 360deg
+  );
+  pointer-events: none;
+  z-index: 0;
+}
 .gauge > * {
   z-index: 1;
 }
@@ -238,6 +258,7 @@ footer {
     <div class="gauges">
 
       <div class="gauge">
+         <div class="gauge-ticks"></div>
         <div class="gauge-label">ENGINE</div>
         <div class="gauge-number">READY</div>
         <div class="needle start" id="needle1"></div>
@@ -245,6 +266,7 @@ footer {
       </div>
 
       <div class="gauge">
+         <div class="gauge-ticks"></div>
         <div class="gauge-label">SYSTEM</div>
         <div class="gauge-number">100%</div>
         <div class="needle start" id="needle2"></div>
