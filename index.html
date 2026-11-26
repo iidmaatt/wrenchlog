@@ -282,10 +282,24 @@ footer {
     </button>
   </div>
 
-  <div class="section">
-    <h2>ACTIVE PROJECT</h2>
-    <p>No vehicle registered.</p>
-    <p>Your next project starts here.</p>
+  <div class="section projects-section">
+    <div class="projects-header">
+      <div>
+        <h2>MY PROJECTS</h2>
+        <p>YOUR VEHICLE DATABASE</p>
+      </div>
+
+      <button class="add-project-button" onclick="openProjectForm()">
+        + NEW PROJECT
+      </button>
+    </div>
+
+    <div id="project-list">
+      <div class="empty-projects">
+        <p>NO PROJECTS REGISTERED</p>
+        <span>Your garage is waiting for its first vehicle.</span>
+      </div>
+    </div>
   </div>
 
   <div class="section">
