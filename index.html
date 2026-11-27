@@ -781,10 +781,43 @@ footer {
   updateMaintenanceFields();
   renderMaintenance();
 }
- function renderMaintenance() {
+function renderMaintenance() {
   const maintenance = JSON.parse(
     localStorage.getItem("wrenchlogMaintenance_" + activeProjectKey) || "[]"
   );
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let overdue = 0;
+  let upcoming = 0;
+  let clear = 0;
+
+  maintenance.forEach(item => {
+    if (item.type !== "date" || !item.date) return;
+
+    const dueDate = new Date(item.date + "T00:00:00");
+    const daysLeft = Math.ceil(
+      (dueDate - today) / (1000 * 60 * 60 * 24)
+    );
+
+    if (daysLeft < 0) {
+      overdue++;
+    } else if (daysLeft <= 30) {
+      upcoming++;
+    } else {
+      clear++;
+    }
+  });
+
+  document.getElementById("overdue-maintenance").textContent =
+    "Overdue: " + overdue;
+
+  document.getElementById("upcoming-maintenance").textContent =
+    "Upcoming: " + upcoming;
+
+  document.getElementById("clear-maintenance").textContent =
+    "All clear: " + clear;
 
   const list = document.getElementById("maintenance-list");
   list.innerHTML = "";
@@ -807,12 +840,12 @@ footer {
 
     if (item.type === "date" && item.date) {
       const parts = item.date.split("-");
-      reminder.textContent = "Due date: " + parts[2] + "." + parts[1] + "." + parts[0];
+      reminder.textContent =
+        "Due date: " + parts[2] + "." + parts[1] + "." + parts[0];
     } else if (item.mileage) {
-      reminder.textContent = "Target mileage: " +
+      reminder.textContent =
+        "Target mileage: " +
         Number(item.mileage).toLocaleString("fi-FI") + " km";
-    } else if (item.date) {
-      reminder.textContent = "Due date: " + item.date;
     }
 
     const deleteButton = document.createElement("button");
