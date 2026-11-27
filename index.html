@@ -377,6 +377,83 @@ footer {
   const form = document.getElementById("project-form");
   form.hidden = false;
 }
+  function saveProject(event) {
+  event.preventDefault();
+
+  const project = {
+    registration: document.getElementById("registration").value,
+    make: document.getElementById("make").value,
+    model: document.getElementById("model").value,
+    year: document.getElementById("year").value,
+    engine: document.getElementById("engine").value,
+    mileage: document.getElementById("mileage").value
+  };
+
+  if (!project.make || !project.model) {
+    alert("Please enter vehicle make and model.");
+    return;
+  }
+
+  const projects = JSON.parse(
+    localStorage.getItem("wrenchlogProjects") || "[]"
+  );
+
+  projects.push(project);
+
+  localStorage.setItem("wrenchlogProjects", JSON.stringify(projects));
+
+  document.getElementById("new-project-form").reset();
+  document.getElementById("project-form").hidden = true;
+
+  renderProjects();
+}
+
+function renderProjects() {
+  const projects = JSON.parse(
+    localStorage.getItem("wrenchlogProjects") || "[]"
+  );
+
+  const list = document.getElementById("project-list");
+  list.innerHTML = "";
+
+  if (projects.length === 0) {
+    list.innerHTML = `
+      <div class="empty-projects">
+        <p>NO PROJECTS REGISTERED</p>
+        <span>Your garage is waiting for its first vehicle.</span>
+      </div>
+    `;
+    return;
+  }
+
+  projects.forEach(project => {
+    const card = document.createElement("div");
+    card.className = "project-card";
+
+    const title = document.createElement("h3");
+    title.textContent = project.make + " " + project.model;
+
+    const details = document.createElement("p");
+    details.textContent =
+      [project.year, project.engine, project.registration]
+      .filter(Boolean)
+      .join(" | ");
+
+    const mileage = document.createElement("p");
+    mileage.textContent = project.mileage
+      ? Number(project.mileage).toLocaleString("fi-FI") + " km"
+      : "Mileage not specified";
+
+    card.append(title, details, mileage);
+    list.appendChild(card);
+  });
+}
+
+document
+  .getElementById("new-project-form")
+  .addEventListener("submit", saveProject);
+
+renderProjects();
 function startSystem() {
   const button = document.querySelector(".start-button");
   const needle1 = document.getElementById("needle1");
