@@ -378,6 +378,73 @@ footer {
   background: #51212b;
   border-color: #ff6575;
 }
+  .maintenance-form {
+  margin-top: 20px;
+  padding: 22px;
+  background: #0c1521;
+  border: 1px solid #263d58;
+  border-left: 3px solid #087cff;
+  border-radius: 8px;
+}
+
+.maintenance-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #26384e;
+  color: #e8edf5;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+
+.maintenance-status {
+  color: #087cff;
+  font-size: 10px;
+}
+
+.maintenance-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.maintenance-field label {
+  color: #7f9bb9;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.maintenance-field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px;
+  background: #101d2c;
+  border: 1px solid #30445c;
+  border-radius: 5px;
+  color: #e8edf5;
+  font-size: 14px;
+}
+
+.maintenance-field input:focus {
+  outline: none;
+  border-color: #087cff;
+}
+
+.maintenance-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.maintenance-form .action-button {
+  width: 100%;
+  margin-top: 5px;
+}
 </style>
 </head>
 
@@ -523,16 +590,34 @@ footer {
   <button type="button" class="action-button" onclick="openMaintenanceForm()">
     + ADD MAINTENANCE
   </button>
-  <div id="maintenance-form" hidden>
-  <input type="text" id="maintenance-name" placeholder="Maintenance task...">
+<div id="maintenance-form" class="maintenance-form" hidden>
 
-  <input type="number" id="maintenance-mileage" placeholder="Due mileage (km)">
+  <div class="maintenance-form-header">
+    <span>NEW SERVICE RECORD</span>
+    <span class="maintenance-status">● NEW</span>
+  </div>
 
-  <input type="date" id="maintenance-date">
+  <div class="maintenance-field">
+    <label for="maintenance-name">SERVICE TASK</label>
+    <input type="text" id="maintenance-name" placeholder="e.g. Oil change">
+  </div>
+
+  <div class="maintenance-grid">
+    <div class="maintenance-field">
+      <label for="maintenance-mileage">DUE MILEAGE</label>
+      <input type="number" id="maintenance-mileage" placeholder="KM">
+    </div>
+
+    <div class="maintenance-field">
+      <label for="maintenance-date">DUE DATE</label>
+      <input type="date" id="maintenance-date">
+    </div>
+  </div>
 
   <button type="button" class="action-button" onclick="saveMaintenance()">
-    SAVE MAINTENANCE
+    SAVE SERVICE RECORD
   </button>
+
 </div>
 
   <div id="maintenance-list">
