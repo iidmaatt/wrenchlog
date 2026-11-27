@@ -346,9 +346,28 @@ footer {
         <p>No work entries yet.</p>
       </div>
 
-      <div class="section">
+           <div class="section">
         <h2>TASKS</h2>
-        <p>No tasks added yet.</p>
+
+        <div>
+          <input
+            type="text"
+            id="task-input"
+            placeholder="Enter a new task..."
+          >
+
+          <button
+            type="button"
+            id="add-task-button"
+            onclick="addTask()"
+          >
+            ADD TASK
+          </button>
+        </div>
+
+        <div id="task-list">
+          <p>No tasks added yet.</p>
+        </div>
       </div>
 
       <div class="section">
