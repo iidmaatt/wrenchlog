@@ -360,6 +360,24 @@ footer {
 .task-item.completed .task-label {
   text-decoration: line-through;
 }
+  .task-delete {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: #26171b;
+  color: #ff6575;
+  border: 1px solid #63303a;
+  border-radius: 5px;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.task-delete:hover {
+  background: #51212b;
+  border-color: #ff6575;
+}
 </style>
 </head>
 
@@ -715,6 +733,22 @@ function renderTasks() {
     const label = document.createElement("span");
     label.className = "task-label";
     label.textContent = task.text;
+    const deleteButton = document.createElement("button");
+deleteButton.textContent = "×";
+deleteButton.className = "task-delete";
+deleteButton.type = "button";
+
+deleteButton.addEventListener("click", () => {
+  tasks.splice(index, 1);
+
+  localStorage.setItem(
+    "wrenchlogTasks_" + activeProjectKey,
+    JSON.stringify(tasks)
+  );
+
+  renderTasks();
+  updateWorkshopStatus();
+});
 
     checkbox.addEventListener("change", () => {
       tasks[index].done = checkbox.checked;
@@ -728,7 +762,7 @@ function renderTasks() {
       updateWorkshopStatus();
     });
 
-    item.append(checkbox, label);
+  item.append(checkbox, label, deleteButton);
     list.appendChild(item);
   });
 }
