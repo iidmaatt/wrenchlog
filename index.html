@@ -503,10 +503,15 @@ document
   .addEventListener("submit", saveProject);
 
 renderProjects();
-  function openProjectDetails(project) {
+ let activeProjectKey = null;
+
+function openProjectDetails(project) {
   document.getElementById("project-list").hidden = true;
   document.getElementById("project-form").hidden = true;
   document.getElementById("project-details").hidden = false;
+
+  activeProjectKey = project.registration ||
+    [project.make, project.model, project.year].join("_");
 
   document.getElementById("detail-title").textContent =
     project.make + " " + project.model;
@@ -517,6 +522,73 @@ renderProjects();
     <p>Engine: ${project.engine || "Not specified"}</p>
     <p>Mileage: ${project.mileage ? Number(project.mileage).toLocaleString("fi-FI") + " km" : "Not specified"}</p>
   `;
+
+  renderTasks();
+}
+
+function addTask() {
+  const input = document.getElementById("task-input");
+  const taskName = input.value.trim();
+
+  if (!taskName) return;
+
+  const tasks = JSON.parse(
+    localStorage.getItem("wrenchlogTasks_" + activeProjectKey) || "[]"
+  );
+
+  tasks.push({
+    text: taskName,
+    done: false
+  });
+
+  localStorage.setItem(
+    "wrenchlogTasks_" + activeProjectKey,
+    JSON.stringify(tasks)
+  );
+
+  input.value = "";
+  renderTasks();
+}
+
+function renderTasks() {
+  const tasks = JSON.parse(
+    localStorage.getItem("wrenchlogTasks_" + activeProjectKey) || "[]"
+  );
+
+  const list = document.getElementById("task-list");
+  list.innerHTML = "";
+
+  if (tasks.length === 0) {
+    list.innerHTML = "<p>No tasks added yet.</p>";
+    return;
+  }
+
+  tasks.forEach((task, index) => {
+    const item = document.createElement("div");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.done;
+
+    const label = document.createElement("span");
+    label.textContent = task.text;
+    label.style.marginLeft = "10px";
+    label.style.textDecoration = task.done ? "line-through" : "none";
+
+    checkbox.addEventListener("change", () => {
+      tasks[index].done = checkbox.checked;
+
+      localStorage.setItem(
+        "wrenchlogTasks_" + activeProjectKey,
+        JSON.stringify(tasks)
+      );
+
+      renderTasks();
+    });
+
+    item.append(checkbox, label);
+    list.appendChild(item);
+  });
 }
 
 function closeProjectDetails() {
