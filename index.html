@@ -732,43 +732,6 @@ function renderTasks() {
     list.appendChild(item);
   });
 }
-
-  const list = document.getElementById("task-list");
-  list.innerHTML = "";
-
-  if (tasks.length === 0) {
-    list.innerHTML = "<p>No tasks added yet.</p>";
-    return;
-  }
-
-  tasks.forEach((task, index) => {
-    const item = document.createElement("div");
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = task.done;
-
-    const label = document.createElement("span");
-    label.textContent = task.text;
-    label.style.marginLeft = "10px";
-    label.style.textDecoration = task.done ? "line-through" : "none";
-
-    checkbox.addEventListener("change", () => {
-      tasks[index].done = checkbox.checked;
-
-      localStorage.setItem(
-        "wrenchlogTasks_" + activeProjectKey,
-        JSON.stringify(tasks)
-      );
-
-      renderTasks();
-            updateWorkshopStatus();
-    });
-
-    item.append(checkbox, label);
-    list.appendChild(item);
-  });
-}
 function updateWorkshopStatus() {
   const projects = JSON.parse(
     localStorage.getItem("wrenchlogProjects") || "[]"
