@@ -605,7 +605,7 @@ footer {
 
   <div class="maintenance-field">
     <label for="maintenance-type">REMINDER TYPE</label>
-    <select id="maintenance-type">
+   <select id="maintenance-type" onchange="updateMaintenanceFields()">
       <option value="mileage">By mileage</option>
       <option value="date">By date</option>
     </select>
@@ -626,10 +626,6 @@ footer {
   </button>
 
 </div>
-
-  <button type="button" class="action-button" onclick="saveMaintenance()">
-    SAVE SERVICE RECORD
-  </button>
 
 </div>
 
