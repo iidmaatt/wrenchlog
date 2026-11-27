@@ -523,6 +523,17 @@ footer {
   <button type="button" class="action-button" onclick="openMaintenanceForm()">
     + ADD MAINTENANCE
   </button>
+  <div id="maintenance-form" hidden>
+  <input type="text" id="maintenance-name" placeholder="Maintenance task...">
+
+  <input type="number" id="maintenance-mileage" placeholder="Due mileage (km)">
+
+  <input type="date" id="maintenance-date">
+
+  <button type="button" class="action-button" onclick="saveMaintenance()">
+    SAVE MAINTENANCE
+  </button>
+</div>
 
   <div id="maintenance-list">
     <p>No maintenance reminders yet.</p>
@@ -575,6 +586,10 @@ footer {
 }
   function openWorkLogForm() {
   const form = document.getElementById("work-log-form");
+  form.hidden = false;
+}
+  function openMaintenanceForm() {
+  const form = document.getElementById("maintenance-form");
   form.hidden = false;
 }
   function saveProject(event) {
