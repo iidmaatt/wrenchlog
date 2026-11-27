@@ -489,6 +489,18 @@ footer {
   width: 100%;
   margin-top: 5px;
 }
+ .gauge-scale {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #d2b77e;
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  z-index: 2;
+  pointer-events: none;
+}
 </style>
 </head>
 
@@ -516,6 +528,14 @@ footer {
         <div class="needle start" id="needle1"></div>
         <div class="center"></div>
       </div>
+     <div class="gauge-scale">
+  <span>0</span>
+  <span>2</span>
+  <span>4</span>
+  <span>6</span>
+  <span>8</span>
+  <span>10</span>
+</div>
 
       <div class="gauge">
          <div class="gauge-ticks"></div>
