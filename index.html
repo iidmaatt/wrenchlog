@@ -292,7 +292,6 @@ footer {
   border-radius: 5px;
   font-size: 14px;
 }
-
 #new-project-form button,
 #work-log-form button,
 #task-form button {
@@ -300,13 +299,27 @@ footer {
   width: 100%;
   margin-top: 22px;
   padding: 14px;
-  background: #087cff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  letter-spacing: 1px;
+  background: linear-gradient(180deg, #344638 0%, #202e23 100%);
+  color: #e8e4d9;
+  border: 1px solid #8b7548;
+  border-radius: 5px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 #ffffff22,
+    0 2px 5px #00000055;
+  transition: all 0.2s ease;
+}
+ #new-project-form button:hover,
+#work-log-form button:hover,
+#task-form button:hover {
+  background: linear-gradient(180deg, #465b49 0%, #2b3b2e 100%);
+  border-color: #d2b77e;
+  box-shadow: 0 0 8px #b69a6033;
 }
   #task-form {
   display: flex;
