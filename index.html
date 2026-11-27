@@ -783,32 +783,46 @@ footer {
   renderMaintenance();
 }
 function renderMaintenance() {
-  const maintenance = JSON.parse(
-    localStorage.getItem("wrenchlogMaintenance_" + activeProjectKey) || "[]"
+  const projects = JSON.parse(
+    localStorage.getItem("wrenchlogProjects") || "[]"
   );
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
 
   let overdue = 0;
   let upcoming = 0;
   let clear = 0;
 
-  maintenance.forEach(item => {
-    if (item.type !== "date" || !item.date) return;
+  // Lasketaan kaikkien autojen kilometriperusteiset huollot
+  projects.forEach(project => {
+    const key = project.registration ||
+      [project.make, project.model, project.year].join("_");
 
-    const dueDate = new Date(item.date + "T00:00:00");
-    const daysLeft = Math.ceil(
-      (dueDate - today) / (1000 * 60 * 60 * 24)
+    const maintenance = JSON.parse(
+      localStorage.getItem("wrenchlogMaintenance_" + key) || "[]"
     );
 
-    if (daysLeft < 0) {
-      overdue++;
-    } else if (daysLeft <= 30) {
-      upcoming++;
-    } else {
-      clear++;
+    const currentMileage = Number(project.mileage);
+
+    if (!Number.isFinite(currentMileage) || project.mileage === "") {
+      return;
     }
+
+    maintenance.forEach(item => {
+      if (item.type !== "mileage" || !item.mileage) return;
+
+      const targetMileage = Number(item.mileage);
+
+      if (!Number.isFinite(targetMileage)) return;
+
+      const kmLeft = targetMileage - currentMileage;
+
+      if (kmLeft < 0) {
+        overdue++;
+      } else if (kmLeft <= 1000) {
+        upcoming++;
+      } else {
+        clear++;
+      }
+    });
   });
 
   document.getElementById("overdue-maintenance").textContent =
@@ -819,6 +833,11 @@ function renderMaintenance() {
 
   document.getElementById("clear-maintenance").textContent =
     "All clear: " + clear;
+
+  // Näytetään edelleen vain avatun auton muistutuslista
+  const maintenance = JSON.parse(
+    localStorage.getItem("wrenchlogMaintenance_" + activeProjectKey) || "[]"
+  );
 
   const list = document.getElementById("maintenance-list");
   list.innerHTML = "";
