@@ -695,6 +695,48 @@ function renderTasks() {
   list.innerHTML = "";
 
   if (tasks.length === 0) {
+    list.innerHTML = `
+      <div class="task-item">
+        <span class="task-label">No tasks added yet.</span>
+      </div>
+    `;
+    return;
+  }
+
+  tasks.forEach((task, index) => {
+    const item = document.createElement("div");
+    item.className = task.done ? "task-item completed" : "task-item";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "task-checkbox";
+    checkbox.checked = task.done;
+
+    const label = document.createElement("span");
+    label.className = "task-label";
+    label.textContent = task.text;
+
+    checkbox.addEventListener("change", () => {
+      tasks[index].done = checkbox.checked;
+
+      localStorage.setItem(
+        "wrenchlogTasks_" + activeProjectKey,
+        JSON.stringify(tasks)
+      );
+
+      renderTasks();
+      updateWorkshopStatus();
+    });
+
+    item.append(checkbox, label);
+    list.appendChild(item);
+  });
+}
+
+  const list = document.getElementById("task-list");
+  list.innerHTML = "";
+
+  if (tasks.length === 0) {
     list.innerHTML = "<p>No tasks added yet.</p>";
     return;
   }
