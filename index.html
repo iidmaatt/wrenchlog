@@ -677,6 +677,66 @@ footer {
   const form = document.getElementById("maintenance-form");
   form.hidden = false;
 }
+  function saveMaintenance() {
+  const name = document.getElementById("maintenance-name").value.trim();
+  const mileage = document.getElementById("maintenance-mileage").value;
+  const date = document.getElementById("maintenance-date").value;
+
+  if (!name) {
+    alert("Please enter a maintenance task.");
+    return;
+  }
+
+  const maintenance = JSON.parse(
+    localStorage.getItem("wrenchlogMaintenance_" + activeProjectKey) || "[]"
+  );
+
+  maintenance.push({
+    name: name,
+    mileage: mileage,
+    date: date
+  });
+
+  localStorage.setItem(
+    "wrenchlogMaintenance_" + activeProjectKey,
+    JSON.stringify(maintenance)
+  );
+
+  document.getElementById("maintenance-name").value = "";
+  document.getElementById("maintenance-mileage").value = "";
+  document.getElementById("maintenance-date").value = "";
+  document.getElementById("maintenance-form").hidden = true;
+
+  renderMaintenance();
+}
+  function renderMaintenance() {
+  const maintenance = JSON.parse(
+    localStorage.getItem("wrenchlogMaintenance_" + activeProjectKey) || "[]"
+  );
+
+  const list = document.getElementById("maintenance-list");
+  list.innerHTML = "";
+
+  if (maintenance.length === 0) {
+    list.innerHTML = "<p>No maintenance reminders yet.</p>";
+    return;
+  }
+
+  maintenance.forEach((item, index) => {
+    const entry = document.createElement("div");
+    entry.className = "task-item";
+
+    entry.innerHTML = `
+      <div>
+        <strong>${item.name}</strong>
+        <p>${item.mileage ? Number(item.mileage).toLocaleString("fi-FI") + " km" : "No mileage set"}</p>
+        <p>${item.date || "No date set"}</p>
+      </div>
+    `;
+
+    list.appendChild(entry);
+  });
+}
   function saveProject(event) {
   event.preventDefault();
 
@@ -786,7 +846,8 @@ function openProjectDetails(project) {
   `;
 
   renderTasks();
-    renderWorkLog();
+  renderWorkLog();
+  renderMaintenance();
 }
 
 function addTask(event) {
