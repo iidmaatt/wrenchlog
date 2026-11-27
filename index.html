@@ -378,6 +378,34 @@ footer {
   background: #51212b;
   border-color: #ff6575;
 }
+  /* MAINTENANCE REMINDER CARDS */
+
+#maintenance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+#maintenance-list .task-item {
+  background: #101d2c;
+  border: 1px solid #263d58;
+  border-left: 3px solid #087cff;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+#maintenance-list .task-item strong {
+  color: #e8edf5;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+#maintenance-list .task-item p {
+  color: #7f9bb9;
+  font-size: 11px;
+  margin: 8px 0 0;
+}
   .maintenance-form {
   margin-top: 20px;
   padding: 22px;
@@ -560,7 +588,10 @@ footer {
 </div>
 
            <div class="section">
-        <h2>TASKS</h2>
+       <h2>TASKS</h2>
+<p class="section-description">
+  Repair jobs and project tasks for this vehicle.
+</p>
 
         <form id="task-form" onsubmit="addTask(event)">
   <input
@@ -586,6 +617,9 @@ footer {
 
 <div class="section">
   <h2>MAINTENANCE</h2>
+<p class="section-description">
+  Scheduled service and maintenance reminders.
+</p>
 
 <button type="button" class="action-button" onclick="openMaintenanceForm()">
   + ADD MAINTENANCE
@@ -664,7 +698,12 @@ footer {
   <h2>WORKSHOP STATUS</h2>
   <p>Total vehicles: <span id="total-vehicles">0</span></p>
   <p>Open tasks: <span id="open-tasks">0</span></p>
-  <p>Completed tasks: <span id="completed-tasks">0</span></p>
+ <div class="workshop-maintenance-status">
+  <h3>MAINTENANCE OVERVIEW</h3>
+  <p id="overdue-maintenance">Overdue: 0</p>
+  <p id="upcoming-maintenance">Upcoming: 0</p>
+  <p id="clear-maintenance">All clear: 0</p>
+</div>
 </div>
 
 </main>
