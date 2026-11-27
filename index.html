@@ -198,12 +198,19 @@ h1 {
 
 .center {
   position: absolute;
-  width: 13px;
-  height: 13px;
-  background: #ed303e;
+  width: 19px;
+  height: 19px;
+  background: radial-gradient(circle at 35% 30%, #e0c58a 0%, #b69a60 35%, #66502f 75%, #30271b 100%);
+  border: 2px solid #d2b77e;
   border-radius: 50%;
-  top: calc(50% - 6px);
-  left: calc(50% - 6px);
+  top: calc(50% - 9.5px);
+  left: calc(50% - 9.5px);
+  box-shadow:
+    0 0 0 2px #202a22,
+    0 0 0 3px #8b7548,
+    inset 0 1px 2px #ffffff66,
+    0 2px 4px #00000099;
+  z-index: 3;
 }
 
 .section {
