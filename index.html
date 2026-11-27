@@ -594,6 +594,7 @@ function openProjectDetails(project) {
   document.getElementById("project-list").hidden = true;
   document.getElementById("project-form").hidden = true;
   document.getElementById("project-details").hidden = false;
+  document.getElementById("projects-header").hidden = true;
 
   activeProjectKey = project.registration ||
     [project.make, project.model, project.year].join("_");
