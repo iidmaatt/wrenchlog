@@ -468,9 +468,14 @@ function renderProjects() {
       ? Number(project.mileage).toLocaleString("fi-FI") + " km"
       : "Mileage not specified";
 
-    card.append(title, details, mileage);
-    list.appendChild(card);
-  });
+card.append(title, details, mileage);
+
+card.style.cursor = "pointer";
+card.addEventListener("click", () => {
+  openProjectDetails(project);
+});
+
+list.appendChild(card);
 }
 
 document
@@ -478,6 +483,26 @@ document
   .addEventListener("submit", saveProject);
 
 renderProjects();
+  function openProjectDetails(project) {
+  document.getElementById("project-list").hidden = true;
+  document.getElementById("project-form").hidden = true;
+  document.getElementById("project-details").hidden = false;
+
+  document.getElementById("detail-title").textContent =
+    project.make + " " + project.model;
+
+  document.getElementById("detail-info").innerHTML = `
+    <p>Registration: ${project.registration || "Not specified"}</p>
+    <p>Year: ${project.year || "Not specified"}</p>
+    <p>Engine: ${project.engine || "Not specified"}</p>
+    <p>Mileage: ${project.mileage ? Number(project.mileage).toLocaleString("fi-FI") + " km" : "Not specified"}</p>
+  `;
+}
+
+function closeProjectDetails() {
+  document.getElementById("project-details").hidden = true;
+  document.getElementById("project-list").hidden = false;
+}
 function startSystem() {
   const button = document.querySelector(".start-button");
   const needle1 = document.getElementById("needle1");
