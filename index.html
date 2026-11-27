@@ -239,7 +239,9 @@ footer {
   padding: 35px 10px;
   letter-spacing: 2px;
 }
-  #new-project-form label {
+ 
+#new-project-form label,
+#work-log-form label {
   display: block;
   margin-top: 15px;
   margin-bottom: 6px;
@@ -247,9 +249,12 @@ footer {
   font-size: 12px;
 }
 
-#new-project-form input {
+#new-project-form input,
+#work-log-form input,
+#work-log-form textarea {
   display: block;
   width: 100%;
+  box-sizing: border-box;
   padding: 12px;
   background: #090d14;
   color: #e8edf5;
@@ -258,7 +263,8 @@ footer {
   font-size: 14px;
 }
 
-#new-project-form button {
+#new-project-form button,
+#work-log-form button {
   display: block;
   width: 100%;
   margin-top: 22px;
