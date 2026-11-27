@@ -519,8 +519,14 @@ footer {
 
 <div class="section">
   <h2>MAINTENANCE</h2>
-  <p>No maintenance reminders yet.</p>
-</div>
+
+  <button type="button" class="action-button" onclick="openMaintenanceForm()">
+    + ADD MAINTENANCE
+  </button>
+
+  <div id="maintenance-list">
+    <p>No maintenance reminders yet.</p>
+  </div>
 </div>
         <div id="project-form" hidden>
       <h2>NEW VEHICLE</h2>
