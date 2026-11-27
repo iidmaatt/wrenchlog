@@ -442,11 +442,11 @@ footer {
   </div>
 
   <div class="section">
-    <h2>WORKSHOP STATUS</h2>
-    <p>Projects: 0</p>
-    <p>Tasks completed: 0</p>
-    <p>Parts registered: 0</p>
-  </div>
+  <h2>WORKSHOP STATUS</h2>
+  <p>Total vehicles: <span id="total-vehicles">0</span></p>
+  <p>Open tasks: <span id="open-tasks">0</span></p>
+  <p>Completed tasks: <span id="completed-tasks">0</span></p>
+</div>
 
 </main>
 
@@ -489,8 +489,9 @@ footer {
 
   renderProjects();
 }
-
+ 
 function renderProjects() {
+    updateWorkshopStatus();
   const projects = JSON.parse(
     localStorage.getItem("wrenchlogProjects") || "[]"
   );
@@ -590,7 +591,8 @@ function addTask() {
   );
 
   input.value = "";
-  renderTasks();
+ renderTasks();
+    updateWorkshopStatus();
 }
 
 function renderTasks() {
@@ -627,13 +629,47 @@ function renderTasks() {
       );
 
       renderTasks();
+            updateWorkshopStatus();
     });
 
     item.append(checkbox, label);
     list.appendChild(item);
   });
 }
+function updateWorkshopStatus() {
+  const projects = JSON.parse(
+    localStorage.getItem("wrenchlogProjects") || "[]"
+  );
 
+  let openTasks = 0;
+  let completedTasks = 0;
+
+  projects.forEach(project => {
+    const key = project.registration ||
+      [project.make, project.model, project.year].join("_");
+
+    const tasks = JSON.parse(
+      localStorage.getItem("wrenchlogTasks_" + key) || "[]"
+    );
+
+    tasks.forEach(task => {
+      if (task.done) {
+        completedTasks++;
+      } else {
+        openTasks++;
+      }
+    });
+  });
+
+  document.getElementById("total-vehicles").textContent =
+    projects.length;
+
+  document.getElementById("open-tasks").textContent =
+    openTasks;
+
+  document.getElementById("completed-tasks").textContent =
+    completedTasks;
+}
 function closeProjectDetails() {
   document.getElementById("project-details").hidden = true;
   document.getElementById("project-list").hidden = false;
