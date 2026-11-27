@@ -587,13 +587,14 @@ footer {
 <div class="section">
   <h2>MAINTENANCE</h2>
 
-  <button type="button" class="action-button" onclick="openMaintenanceForm()">
-    + ADD MAINTENANCE
-  </button>
+<button type="button" class="action-button" onclick="openMaintenanceForm()">
+  + ADD MAINTENANCE
+</button>
+
 <div id="maintenance-form" class="maintenance-form" hidden>
 
   <div class="maintenance-form-header">
-    <span>NEW SERVICE RECORD</span>
+    <span>NEW SERVICE REMINDER</span>
     <span class="maintenance-status">● NEW</span>
   </div>
 
@@ -602,17 +603,29 @@ footer {
     <input type="text" id="maintenance-name" placeholder="e.g. Oil change">
   </div>
 
-  <div class="maintenance-grid">
-    <div class="maintenance-field">
-      <label for="maintenance-mileage">DUE MILEAGE</label>
-      <input type="number" id="maintenance-mileage" placeholder="KM">
-    </div>
-
-    <div class="maintenance-field">
-      <label for="maintenance-date">DUE DATE</label>
-      <input type="date" id="maintenance-date">
-    </div>
+  <div class="maintenance-field">
+    <label for="maintenance-type">REMINDER TYPE</label>
+    <select id="maintenance-type">
+      <option value="mileage">By mileage</option>
+      <option value="date">By date</option>
+    </select>
   </div>
+
+  <div class="maintenance-field" id="maintenance-mileage-field">
+    <label for="maintenance-mileage">TARGET MILEAGE (KM)</label>
+    <input type="number" id="maintenance-mileage" placeholder="e.g. 250000">
+  </div>
+
+  <div class="maintenance-field" id="maintenance-date-field" hidden>
+    <label for="maintenance-date">TARGET DATE</label>
+    <input type="date" id="maintenance-date">
+  </div>
+
+  <button type="button" class="action-button" onclick="saveMaintenance()">
+    SAVE REMINDER
+  </button>
+
+</div>
 
   <button type="button" class="action-button" onclick="saveMaintenance()">
     SAVE SERVICE RECORD
@@ -676,14 +689,35 @@ footer {
   function openMaintenanceForm() {
   const form = document.getElementById("maintenance-form");
   form.hidden = false;
+    updateMaintenanceFields();
+}
+  function updateMaintenanceFields() {
+  const type = document.getElementById("maintenance-type").value;
+
+  document.getElementById("maintenance-mileage-field").hidden =
+    type !== "mileage";
+
+  document.getElementById("maintenance-date-field").hidden =
+    type !== "date";
 }
   function saveMaintenance() {
   const name = document.getElementById("maintenance-name").value.trim();
+  const type = document.getElementById("maintenance-type").value;
   const mileage = document.getElementById("maintenance-mileage").value;
   const date = document.getElementById("maintenance-date").value;
 
   if (!name) {
     alert("Please enter a maintenance task.");
+    return;
+  }
+
+  if (type === "mileage" && !mileage) {
+    alert("Please enter the target mileage.");
+    return;
+  }
+
+  if (type === "date" && !date) {
+    alert("Please select a target date.");
     return;
   }
 
@@ -693,8 +727,9 @@ footer {
 
   maintenance.push({
     name: name,
-    mileage: mileage,
-    date: date
+    type: type,
+    mileage: type === "mileage" ? mileage : "",
+    date: type === "date" ? date : ""
   });
 
   localStorage.setItem(
@@ -705,11 +740,13 @@ footer {
   document.getElementById("maintenance-name").value = "";
   document.getElementById("maintenance-mileage").value = "";
   document.getElementById("maintenance-date").value = "";
+  document.getElementById("maintenance-type").value = "mileage";
   document.getElementById("maintenance-form").hidden = true;
 
+  updateMaintenanceFields();
   renderMaintenance();
 }
-  function renderMaintenance() {
+ function renderMaintenance() {
   const maintenance = JSON.parse(
     localStorage.getItem("wrenchlogMaintenance_" + activeProjectKey) || "[]"
   );
@@ -726,14 +763,41 @@ footer {
     const entry = document.createElement("div");
     entry.className = "task-item";
 
-    entry.innerHTML = `
-      <div>
-        <strong>${item.name}</strong>
-        <p>${item.mileage ? Number(item.mileage).toLocaleString("fi-FI") + " km" : "No mileage set"}</p>
-        <p>${item.date || "No date set"}</p>
-      </div>
-    `;
+    const details = document.createElement("div");
 
+    const name = document.createElement("strong");
+    name.textContent = item.name;
+
+    const reminder = document.createElement("p");
+
+    if (item.type === "date" && item.date) {
+      const parts = item.date.split("-");
+      reminder.textContent = "Due date: " + parts[2] + "." + parts[1] + "." + parts[0];
+    } else if (item.mileage) {
+      reminder.textContent = "Target mileage: " +
+        Number(item.mileage).toLocaleString("fi-FI") + " km";
+    } else if (item.date) {
+      reminder.textContent = "Due date: " + item.date;
+    }
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "×";
+    deleteButton.className = "task-delete";
+    deleteButton.type = "button";
+
+    deleteButton.addEventListener("click", () => {
+      maintenance.splice(index, 1);
+
+      localStorage.setItem(
+        "wrenchlogMaintenance_" + activeProjectKey,
+        JSON.stringify(maintenance)
+      );
+
+      renderMaintenance();
+    });
+
+    details.append(name, reminder);
+    entry.append(details, deleteButton);
     list.appendChild(entry);
   });
 }
