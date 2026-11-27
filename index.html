@@ -394,21 +394,17 @@ footer {
            <div class="section">
         <h2>TASKS</h2>
 
-        <div>
-          <input
-            type="text"
-            id="task-input"
-            placeholder="Enter a new task..."
-          >
-
-          <button
-            type="button"
-            id="add-task-button"
-            onclick="addTask()"
-          >
-            ADD TASK
-          </button>
-        </div>
+        <form id="task-form" onsubmit="addTask(event)">
+  <input
+    type="text"
+    id="task-input"
+    placeholder="Enter a new task..."
+    required
+  >
+  <button type="submit">
+    + ADD TASK
+  </button>
+</form>
 
         <div id="task-list">
           <p>No tasks added yet.</p>
@@ -580,7 +576,8 @@ function openProjectDetails(project) {
     renderWorkLog();
 }
 
-function addTask() {
+function addTask(event) {
+  event.preventDefault();
   const input = document.getElementById("task-input");
   const taskName = input.value.trim();
 
